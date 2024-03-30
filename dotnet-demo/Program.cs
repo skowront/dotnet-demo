@@ -1,4 +1,7 @@
 
+using dotnet_common.Interfaces;
+using dotnet_demo.Services;
+
 namespace dotnet_demo
 {
     public class Program
@@ -14,6 +17,8 @@ namespace dotnet_demo
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<IWeatherService, WeatherService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -24,8 +29,14 @@ namespace dotnet_demo
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(cors => cors
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowAnyOrigin()
+                .SetIsOriginAllowedToAllowWildcardSubdomains().SetIsOriginAllowed(_ => true));
 
             app.UseAuthorization();
+
 
 
             app.MapControllers();

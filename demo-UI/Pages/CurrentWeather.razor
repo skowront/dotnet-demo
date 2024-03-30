@@ -1,0 +1,19 @@
+﻿@using dotnet_common
+@using dotnet_common.Interfaces
+@inject IWeatherService WeatherService
+@page "/currentWeather"
+
+<h3>CurrentWeather</h3>
+@weatherForecast.TemperatureC;
+@weatherForecast.Summary;
+@weatherForecast.Date;
+
+@code {
+    private WeatherForecast weatherForecast = new WeatherForecast();
+    protected override async Task OnInitializedAsync()
+    {
+        this.weatherForecast = await this.WeatherService.GetCurrentWeather();
+        await base.OnInitializedAsync();
+        return;
+    }
+}
